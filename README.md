@@ -195,8 +195,7 @@ Generated Selenium scripts include proper error handling, explicit waits, and ma
 
 ### Scalable Architecture
 Modular design supports integration with existing development workflows and scales to handle large documentation sets and complex web applications.
-## Co
-ntributing
+## Contributing
 
 We welcome contributions from the community. Please follow these guidelines:
 
