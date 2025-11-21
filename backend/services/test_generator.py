@@ -1,13 +1,15 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import json
 import re
 from .knowledge_base import KnowledgeBase
+from .llm_client import GeminiClient
 
 class TestGenerator:
     """Generate test cases based on documentation and user queries"""
     
-    def __init__(self, knowledge_base: KnowledgeBase):
+    def __init__(self, knowledge_base: KnowledgeBase, llm_client: Optional[GeminiClient] = None):
         self.knowledge_base = knowledge_base
+        self.llm_client = llm_client
     
     def generate_test_cases(self, query: str) -> List[Dict[str, Any]]:
         """Generate test cases based on query and retrieved context"""
@@ -28,7 +30,16 @@ class TestGenerator:
             # Build context string
             context = self._build_context_string(context_chunks)
             
-            # Generate test cases using rule-based approach
+            # Try LLM-backed generation first when configured
+            if self.llm_client and self.llm_client.is_configured:
+                try:
+                    test_cases = self.llm_client.generate_test_cases(query, context)
+                    if test_cases:
+                        return test_cases
+                except Exception as llm_error:
+                    print(f"Gemini generation failed, falling back to rule-based logic: {llm_error}")
+            
+            # Fallback to rule-based generation
             test_cases = self._generate_rule_based_test_cases(query, context, context_chunks)
             
             return test_cases

@@ -60,6 +60,8 @@ The system chunks documents, generates semantic embeddings, and stores them in a
 ### Test Case Generation
 Query the system with natural language requests such as "Generate test cases for form validation" or "Create tests for payment processing workflow". The agent retrieves relevant documentation context and generates comprehensive test scenarios.
 
+The system uses advanced AI models when available for higher-fidelity test generation, with automatic fallback to rule-based generation ensuring the system works reliably in all environments.
+
 ### Script Generation
 Select generated test cases to convert into executable Selenium Python scripts. The system analyzes your HTML structure and creates scripts with accurate element selectors and proper assertions.
 

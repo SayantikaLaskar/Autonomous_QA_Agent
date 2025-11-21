@@ -7,12 +7,16 @@ import os
 
 import sys
 import os
+from dotenv import load_dotenv
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from services.document_processor import DocumentProcessor
 from services.knowledge_base import KnowledgeBase
 from services.test_generator import TestGenerator
 from services.script_generator import ScriptGenerator
+from services.llm_client import GeminiClient
+
+load_dotenv()
 
 app = FastAPI(title="QA Agent API", version="1.0.0")
 
@@ -28,7 +32,8 @@ app.add_middleware(
 # Initialize services
 doc_processor = DocumentProcessor()
 knowledge_base = KnowledgeBase()
-test_generator = TestGenerator(knowledge_base)
+llm_client = GeminiClient()
+test_generator = TestGenerator(knowledge_base, llm_client=llm_client)
 script_generator = ScriptGenerator(knowledge_base)
 
 class TestCaseRequest(BaseModel):
